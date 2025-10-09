@@ -1,0 +1,61 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: module-controller
+  labels:
+    app: module-controller
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: module-controller
+  template:
+    metadata:
+      labels:
+        app: module-controller
+    spec:
+      serviceAccountName: k8s-control-app  # 使用专用服务账户
+      containers:
+        - name: module-controller
+          image: qunboo/module-controller:1.0-SNAPSHOT
+          ports:
+            - containerPort: 8083
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: "kubernetes"
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: "250m"
+            limits:
+              memory: "1024Mi"
+              cpu: "500m"
+          livenessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8083
+            initialDelaySeconds: 120
+            periodSeconds: 10
+            failureThreshold: 3
+            timeoutSeconds: 5
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8083
+            initialDelaySeconds: 60
+            periodSeconds: 10
+            failureThreshold: 3
+            timeoutSeconds: 3
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: module-controller-service
+spec:
+  selector:
+    app: module-controller
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8083
+  type: ClusterIP
