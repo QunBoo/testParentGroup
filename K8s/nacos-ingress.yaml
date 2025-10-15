@@ -1,0 +1,22 @@
+# nacos-ingress.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: nacos-ingress
+#  namespace: nacos-ns
+#  annotations:
+#    # 注解配置取决于你的Ingress Controller，例如nginx：
+#    kubernetes.io/ingress.class: "nginx"
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: nacos.example.com  # 将此处替换为你自己的域名
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: nacos-service  # 指向你的Nacos Service
+                port:
+                  number: 8848

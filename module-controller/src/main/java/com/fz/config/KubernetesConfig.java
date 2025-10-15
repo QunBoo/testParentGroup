@@ -19,7 +19,8 @@ public class KubernetesConfig {
             return Config.fromCluster();
         } else {
             // 在集群外部运行，使用kubeconfig
-            return Config.fromConfig("/path/to/kubeconfig");
+            //"C:\Users\19297\.kube\config"
+            return Config.fromConfig("C:\\Users\\19297\\.kube\\config");
         }
     }
 

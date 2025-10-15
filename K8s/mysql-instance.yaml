@@ -1,0 +1,22 @@
+# mysql-instance.yaml
+apiVersion: "db.example.com/v1alpha1"
+kind: MySQLCluster
+metadata:
+  name: my-production-mysql
+  namespace: default
+spec:
+  image: mysql:8.0
+  replicas: 3
+  resources:
+    requests:
+      cpu: "500m"
+      memory: "1Gi"
+    limits:
+      cpu: "1000m"
+      memory: "2Gi"
+  storage:
+    size: "100Gi"
+    storageClass: "ssd"
+  rootPasswordSecret:
+    name: mysql-root-password-secret  # 需提前创建此 Secret
+    key: password

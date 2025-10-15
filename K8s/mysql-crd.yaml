@@ -1,0 +1,73 @@
+# mysql-crd.yaml
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: mysqlclusters.db.example.com  # 名称格式：复数.组名
+spec:
+  group: db.example.com               # API 组
+  scope: Namespaced                   # 命名空间作用域
+  names:
+    plural: mysqlclusters             # 复数形式 —— kubectl get mysqlclusters
+    singular: mysqlcluster            # 单数形式 —— kubectl describe mysqlcluster <name>
+    kind: MySQLCluster                # Kind
+    shortNames: ["mysql"]             # 资源简称，方便操作
+  versions:
+    - name: v1alpha1                   # 版本
+      served: true                     # API Server 是否提供此版本
+      storage: true                    # 是否将数据以此版本格式存储
+      schema:
+        openAPIV3Schema:               # 字段校验 schema
+          type: object
+          properties:
+            spec:
+              type: object
+              required: [image, replicas, resources] # 必填字段
+              properties:
+                image:
+                  type: string
+                replicas:
+                  type: integer
+                  minimum: 1           # 副本数至少为1
+                  maximum: 5           # 假设我们限制最大副本为5
+                resources:
+                  type: object
+                  properties:
+                    requests:
+                      type: object
+                      properties:
+                        cpu:
+                          type: string
+                        memory:
+                          type: string
+                    limits:
+                      type: object
+                      properties:
+                        cpu:
+                          type: string
+                        memory:
+                          type: string
+                storage:
+                  type: object
+                  properties:
+                    size:
+                      type: string
+                    storageClass:
+                      type: string
+                rootPasswordSecret:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                    key:
+                      type: string
+                  # 这里可以增加更多约束，比如 key 的默认值等
+      additionalPrinterColumns:         # 自定义 kubectl get 时的显示列
+        - name: Replicas
+          type: integer
+          jsonPath: .spec.replicas
+        - name: Image
+          type: string
+          jsonPath: .spec.image
+        - name: Age
+          type: date
+          jsonPath: .metadata.creationTimestamp
