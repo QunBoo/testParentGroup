@@ -39,6 +39,11 @@
             <groupId>io.fabric8</groupId>
             <artifactId>kubernetes-client</artifactId>
         </dependency>
+<!--        &lt;!&ndash; Prometheus 依赖：支持 Prometheus 采集监控数据 &ndash;&gt;-->
+<!--        <dependency>-->
+<!--            <groupId>io.micrometer</groupId>-->
+<!--            <artifactId>micrometer-registry-prometheus</artifactId>-->
+<!--        </dependency>-->
     </dependencies>
 
     <build>

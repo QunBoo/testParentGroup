@@ -51,7 +51,15 @@ public class KubernetesController {
         return ResponseEntity.ok(pods);
     }
 
-
+    // 查询集群中的node列表
+    @GetMapping("/nodes")
+    public ResponseEntity<?> getNodes() {
+        try (KubernetesClient client = new DefaultKubernetesClient()) {
+            List<io.fabric8.kubernetes.api.model.Node> nodes = client.nodes().list().getItems();
+            log.info("getNodes nodes size: " + nodes.size());
+            return ResponseEntity.ok(nodes);
+        }
+    }
 
     //创建pod举例
     @PostMapping("/createPodCase")

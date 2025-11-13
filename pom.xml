@@ -24,6 +24,7 @@
         <module>module-app</module>  <!-- 子模块目录名 -->
         <module>module-api</module>
         <module>module-controller</module>
+        <module>module-postgresqlOperator</module>
     </modules>
 
     <!-- 统一管理依赖版本 -->
