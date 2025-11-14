@@ -15,13 +15,13 @@ spec:
                 name: module-api-service
                 port:
                   number: 80
-          - path: /app
-            pathType: Prefix
-            backend:
-              service:
-                name: module-app-service
-                port:
-                  number: 80
+#          - path: /app
+#            pathType: Prefix
+#            backend:
+#              service:
+#                name: module-app-service
+#                port:
+#                  number: 80
           - path: /controller
             pathType: Prefix
             backend:
